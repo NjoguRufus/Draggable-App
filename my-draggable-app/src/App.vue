@@ -2,12 +2,24 @@
   <div id="app">
     <h1>Draggable List</h1>
 
+    <!-- Input and Button to Add Item -->
     <div class="input-container">
-      <input v-model="newItemName" type="text" placeholder="Enter item name..." />
+      <input
+        v-model="newItemName"
+        type="text"
+        placeholder="Enter item name..."
+        @keyup.enter="addItem"
+      />
       <button @click="addItem">Add Item</button>
     </div>
 
-    <draggable v-model="items" @end="handleDragEnd" itemKey="id" class="draggable-list">
+    <!-- Draggable List -->
+    <draggable
+      v-model="items"
+      @end="handleDragEnd"
+      itemKey="id"
+      class="draggable-list"
+    >
       <template #item="{ element }">
         <div :key="element.id" class="item">
           {{ element.name }}
@@ -16,11 +28,13 @@
       </template>
     </draggable>
 
+    <!-- Action Buttons -->
     <div class="button-container">
       <button @click="saveItems">Save</button>
       <button @click="shareItems">Share</button>
     </div>
 
+    <!-- Message Display -->
     <p v-if="message" class="message">{{ message }}</p>
   </div>
 </template>
@@ -57,8 +71,8 @@ const addItem = () => {
   }
 
   const newItem = {
-    id: Date.now(),
-    name: newItemName.value.trim()
+    id: Date.now(), // Unique ID based on current timestamp
+    name: newItemName.value.trim(),
   };
 
   store.addItem(newItem);
@@ -66,7 +80,7 @@ const addItem = () => {
   message.value = "Item added successfully!";
 };
 
-// **Fix: Properly remove an item**
+// Remove an item
 const removeItem = (id: number) => {
   store.removeItem(id);
   items.value = [...store.items]; // Update items array after removing
@@ -116,44 +130,52 @@ const saveItemsToRealtimeDatabase = async (items: any[]) => {
 <style scoped>
 /* Modern Styling */
 #app {
-  max-width: 500px;
+  max-width: 600px;
   margin: 50px auto;
   padding: 20px;
   text-align: center;
-  background: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
   color: #333;
-  font-size: 1.8rem;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 
 /* Input & Button Styling */
 .input-container {
   display: flex;
-  gap: 10px;
+  gap: 15px;
   margin-bottom: 20px;
 }
 
 input {
   flex: 1;
-  padding: 10px;
+  padding: 12px;
   border: 2px solid #ddd;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  border-color: #007bff;
 }
 
 button {
-  padding: 10px 15px;
+  padding: 12px 20px;
   border: none;
   background: #007bff;
   color: white;
   font-size: 1rem;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background-color 0.3s;
 }
 
 button:hover {
@@ -164,36 +186,37 @@ button:hover {
 .draggable-list {
   padding: 10px;
   background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px;
-  margin: 5px 0;
-  background: #e9ecef;
-  border-radius: 5px;
-  cursor: grab;
+  padding: 14px;
+  margin: 8px 0;
+  background: #f1f1f1;
+  border-radius: 8px;
   font-weight: 500;
+  cursor: grab;
   transition: 0.3s;
 }
 
 .item:hover {
-  background: #dee2e6;
+  background: #e0e0e0;
 }
 
 /* Remove Button */
 .remove-btn {
   background: #dc3545;
   color: white;
-  font-size: 0.8rem;
-  padding: 5px;
-  border-radius: 5px;
+  font-size: 1rem;
+  padding: 6px;
+  border-radius: 6px;
   cursor: pointer;
   border: none;
+  transition: background 0.3s;
 }
 
 .remove-btn:hover {
@@ -204,13 +227,13 @@ button:hover {
 .button-container {
   margin-top: 20px;
   display: flex;
-  gap: 10px;
+  gap: 15px;
   justify-content: center;
 }
 
 /* Message Display */
 .message {
-  margin-top: 15px;
+  margin-top: 20px;
   font-size: 1rem;
   color: #28a745;
   font-weight: 500;

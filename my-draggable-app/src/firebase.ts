@@ -27,7 +27,7 @@ export const database = getDatabase(app);
 
 // Connect to Firestore Emulator (only in development mode)
 if (window.location.hostname === "localhost") {
-  connectFirestoreEmulator(firestore, "localhost", 8080);  // Firestore Emulator
+  connectFirestoreEmulator(firestore, "localhost", 8081);  // Firestore Emulator (port should be 8081)
   console.log("Connected to Firestore Emulator");
 
   connectDatabaseEmulator(database, "localhost", 9000);  // Realtime Database Emulator (default port: 9000)
